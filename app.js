@@ -4,6 +4,9 @@ const STORAGE_KEY_URL = 'vku_survey_script_url';
 const STORAGE_KEY_QUEUE = 'vku_survey_offline_queue';
 const STORAGE_KEY_HISTORY = 'vku_survey_history';
 
+// User's Google Sheet Web App Endpoint (Hardcoded for silent background submission)
+const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuU-juqAXqwRyfpqsVP9v37SzCEz3NXHTVgf_IJACT2iN0BXsNOsIZ93LPUjveTaRF/exec';
+
 // Default Mock / Demo Data
 let historyData = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)) || [
   {
@@ -131,7 +134,7 @@ function setupFormHandler() {
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<span>⏳ Đang gửi dữ liệu...</span>';
 
-    const scriptUrl = localStorage.getItem(STORAGE_KEY_URL);
+    const scriptUrl = localStorage.getItem(STORAGE_KEY_URL) || DEFAULT_SCRIPT_URL;
 
     if (navigator.onLine && scriptUrl) {
       try {
