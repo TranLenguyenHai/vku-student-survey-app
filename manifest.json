@@ -1,11 +1,11 @@
 {
-  "name": "Mobile Ecosystem & Market Trends 2026",
-  "short_name": "MobileTrends2026",
-  "description": "Interactive Web App & PWA for Mobile Cross-Platform Strategy Analysis, Market Trends & Tech Stack Decision Engine",
+  "name": "VKU Student Mobile Survey PWA",
+  "short_name": "VKUSurvey",
+  "description": "Progressive Web App khảo sát nhu cầu sử dụng ứng dụng di động sinh viên VKU kết nối Google Sheets Database",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#06b6d4",
+  "theme_color": "#0284c7",
   "orientation": "any",
   "icons": [
     {
