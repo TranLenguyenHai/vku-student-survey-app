@@ -134,7 +134,8 @@ function setupFormHandler() {
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<span>⏳ Đang gửi dữ liệu...</span>';
 
-    const scriptUrl = localStorage.getItem(STORAGE_KEY_URL) || DEFAULT_SCRIPT_URL;
+    // Always use hardcoded Google Apps Script Web App Endpoint
+    const scriptUrl = DEFAULT_SCRIPT_URL;
 
     if (navigator.onLine && scriptUrl) {
       try {
@@ -184,7 +185,7 @@ function queueOfflineRecord(record) {
 async function syncOfflineQueue() {
   if (offlineQueue.length === 0) return;
 
-  const scriptUrl = localStorage.getItem(STORAGE_KEY_URL);
+  const scriptUrl = DEFAULT_SCRIPT_URL;
   if (!scriptUrl) return;
 
   showToast(`⚡ Đang đồng bộ ${offlineQueue.length} bản ghi Offline lên Google Sheet...`);
