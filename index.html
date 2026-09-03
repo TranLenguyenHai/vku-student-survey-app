@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Ecosystem & Market Trends 2026 | VKU Courseware</title>
+  <meta name="description" content="Interactive Web App & PWA analyzing 2026 Mobile Development Strategies: Native, Hybrid, Cross-Platform (Flutter, React Native), and PWA.">
+  <meta name="keywords" content="Mobile Development, Cross-Platform, Flutter, React Native, PWA, Capacitor, Native iOS, Android, Market Trends 2026, VKU">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mobile Ecosystem & Market Trends 2026">
+  <meta property="og:description" content="Interactive platform comparison matrix, tech decision engine calculator, and 2026 mobile trends visualizer.">
+  <meta property="og:type" content="website">
+
+  <!-- PWA Manifest & Theme -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#06b6d4">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <span>MobileTrends <span class="text-gradient">2026</span></span>
+    </div>
+    
+    <div class="status-bar">
+      <div class="status-badge" id="onlineStatusBadge">
+        <span class="status-dot"></span>
+        <span id="onlineStatusText">ONLINE</span>
+      </div>
+      <button class="btn-pwa" id="btnInstallPwa" style="display: none;">
+        <span>📥</span> Install App
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+      <div class="hero-tag">Cross-Platform Mobile App Development • Week 1-2</div>
+      <h1 class="hero-title">The 2026 Mobile Development <span class="text-gradient">Landscape</span></h1>
+      <p class="hero-subtitle">
+        Explore real-time data, evaluate development strategies (Native, Hybrid, Cross-Platform, PWA), calculate the optimal stack for your project, and analyze 2026 market trends.
+      </p>
+
+      <!-- Key Metrics Counters -->
+      <div class="metrics-grid" id="metricsGrid">
+        <div class="metric-card">
+          <div class="metric-value text-gradient">88%</div>
+          <div class="metric-label">Cross-Platform Adoption</div>
+          <div class="metric-sub">Default choice for new business apps in 2026</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value text-gradient">90-95%</div>
+          <div class="metric-label">Business Code Reuse</div>
+          <div class="metric-sub">Single codebase across iOS & Android</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value text-gradient">3-4 Mo</div>
+          <div class="metric-label">Avg Time-to-MVP</div>
+          <div class="metric-sub">50% faster launch compared to 2 native teams</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value text-gradient">$100K+</div>
+          <div class="metric-label">Annual Cost Savings</div>
+          <div class="metric-sub">Streamlined single-team engineering stack</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="section-nav" id="sectionNav">
+      <button class="tab-btn active" data-tab="tab-matrix">📊 Comparison Matrix</button>
+      <button class="tab-btn" data-tab="tab-calculator">🎯 Tech Stack Calculator</button>
+      <button class="tab-btn" data-tab="tab-trends">🚀 2026 Trends & AI</button>
+      <button class="tab-btn" data-tab="tab-cases">🏢 Real Case Studies</button>
+    </div>
+
+    <!-- TAB 1: Comparison Matrix -->
+    <section class="glass-section tab-content" id="tab-matrix">
+      <div class="section-header">
+        <h2 class="section-title">4 Mobile Development <span class="text-gradient">Strategies Matrix</span></h2>
+        <p class="section-desc">Side-by-side evaluation of Native, Hybrid (Capacitor), Cross-Platform (Flutter/RN), and PWA paradigms.</p>
+      </div>
+
+      <div class="matrix-controls">
+        <button class="filter-btn active" data-filter="all">All Strategies</button>
+        <button class="filter-btn" data-filter="fast">Fastest MVP</button>
+        <button class="filter-btn" data-filter="perf">Maximum Performance</button>
+        <button class="filter-btn" data-filter="store">No App Store Required</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="matrix-table" id="matrixTable">
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th>Language / Stack</th>
+              <th>Performance</th>
+              <th>Time to MVP</th>
+              <th>Hardware Access</th>
+              <th>Best Used For</th>
+            </tr>
+          </thead>
+          <tbody id="matrixTableBody">
+            <!-- Dynamic JS Injection -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 2: Decision Calculator -->
+    <section class="glass-section tab-content" id="tab-calculator" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">Tech Stack <span class="text-gradient">Decision Engine</span></h2>
+        <p class="section-desc">Answer a few questions about your project requirements to calculate the ideal mobile framework.</p>
+      </div>
+
+      <div class="calculator-grid">
+        <form class="quiz-form" id="quizForm">
+          <div class="form-group">
+            <label class="form-label" for="qType">1. What type of application are you building?</label>
+            <select class="form-select" id="qType">
+              <option value="business">Business / E-Commerce / Social App (Standard UI & APIs)</option>
+              <option value="pwa_web">Content Site / Portal / MVP needing Instant Web Access</option>
+              <option value="game_ar">AAA 3D Game / High-FPS Graphics / AR & VR</option>
+              <option value="pwa_wrap">Existing Web App / PWA needing rapid Mobile App Store distribution</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="qTeam">2. What is your team's primary engineering skill?</label>
+            <select class="form-select" id="qTeam">
+              <option value="js_ts">JavaScript / TypeScript / React / Web</option>
+              <option value="dart">Dart / Flutter / Object-Oriented</option>
+              <option value="native_langs">Swift / Kotlin / Platform Native</option>
+              <option value="web_only">HTML / CSS / Web Standards only</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="qBudget">3. Budget & Delivery Timeframe:</label>
+            <select class="form-select" id="qBudget">
+              <option value="tight">Strict Budget & Tight Deadline (3-4 Months MVP)</option>
+              <option value="medium">Standard Product Budget & Balanced Schedule</option>
+              <option value="high">Enterprise Budget & Unconstrained Timeline</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="qHardware">4. Hardware & Bluetooth / Sensor Needs:</label>
+            <select class="form-select" id="qHardware">
+              <option value="standard">Standard (Camera, Location, Push Notifications)</option>
+              <option value="heavy">Low-level Bluetooth LE, Custom Audio Driver, Background Sensors</option>
+              <option value="minimal">Minimal / Web Browser Features</option>
+            </select>
+          </div>
+        </form>
+
+        <div class="results-card" id="resultsCard">
+          <div>
+            <div class="recommend-badge" id="recBadge">⭐ RECOMMENDED</div>
+            <h3 class="recommend-title" id="recTitle">Cross-Platform (Flutter / React Native)</h3>
+            <p class="recommend-desc" id="recDesc">Ideal choice balancing 90%+ code reuse, high performance (85-95%), and fast time-to-market.</p>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">SUITABILITY MATCH SCORES</h4>
+            <div class="scores-breakdown" id="scoresBreakdown">
+              <!-- JS Injected Bars -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: 2026 Trends & AI -->
+    <section class="glass-section tab-content" id="tab-trends" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">5 Trends Shaping <span class="text-gradient">Mobile (2026)</span></h2>
+        <p class="section-desc">Key industry shifts defining modern mobile architecture and engineering practices.</p>
+      </div>
+
+      <div class="trends-grid" id="trendsGrid">
+        <div class="trend-card">
+          <div class="trend-icon">📱</div>
+          <h3 class="trend-title">1. Super Apps Expansion</h3>
+          <p class="trend-text">Apps like Grab, WeChat, and Zalo bundle payment, food delivery, and messaging into modular micro-frontends.</p>
+        </div>
+        <div class="trend-card">
+          <div class="trend-icon">🤖</div>
+          <h3 class="trend-title">2. AI Everywhere</h3>
+          <p class="trend-text">On-device ML (CoreML/TFLite) for privacy and zero latency vs Cloud LLM APIs for massive reasoning capabilities.</p>
+        </div>
+        <div class="trend-card">
+          <div class="trend-icon">⚡</div>
+          <h3 class="trend-title">3. Cross-Platform Mainstream</h3>
+          <p class="trend-text">Flutter and React Native are no longer "budget options" but the primary choice for 85%+ of tech companies.</p>
+        </div>
+        <div class="trend-card">
+          <div class="trend-icon">🛠️</div>
+          <h3 class="trend-title">4. Low-Code vs Production Code</h3>
+          <p class="trend-text">Tools like FlutterFlow excel at rapid MVPs, while complex production apps require full architectural control.</p>
+        </div>
+        <div class="trend-card">
+          <div class="trend-icon">🌐</div>
+          <h3 class="trend-title">5. Offline-First & PWA</h3>
+          <p class="trend-text">Service Workers & local DB sync solve poor connectivity issues and increase user retention by up to 136%.</p>
+        </div>
+      </div>
+
+      <!-- AI On-device vs Cloud Chart -->
+      <div style="margin-top: 3rem;">
+        <h3 style="margin-bottom: 0.5rem;">AI Architecture Trade-off Matrix</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">Comparing On-Device Machine Learning against Cloud AI Endpoints (Revisited in Week 14 Capstone).</p>
+        
+        <div class="chart-container">
+          <canvas id="aiTradeoffChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Case Studies -->
+    <section class="glass-section tab-content" id="tab-cases" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">4 Real-World <span class="text-gradient">Case Studies</span></h2>
+        <p class="section-desc">How global tech leaders scale using PWA, Flutter, React Native, and Capacitor.</p>
+      </div>
+
+      <div class="case-grid" id="caseGrid">
+        <!-- JS Injected Case Cards -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Component for Case Studies -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div id="modalBody">
+        <!-- JS Injected Modal Data -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Mobile Cross-Platform App Development • Courseware by <strong>Nguyen Thanh Tuan, PhD</strong></p>
+    <p style="margin-top: 0.4rem;">Designed for VKU Students • Built with Vanilla JS & Progressive Web App (PWA) Standards</p>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
