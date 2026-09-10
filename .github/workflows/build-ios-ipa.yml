@@ -24,8 +24,8 @@ jobs:
 
       - name: Copy Web Assets to iOS
         run: |
-          npm run build
-          npx cap copy ios
+          node scripts/copy-web.js
+          node ./node_modules/@capacitor/cli/bin/capacitor copy ios
 
       - name: Build Xcode Archive (Unsigned for Sideloadly)
         run: |
