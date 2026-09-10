@@ -1,0 +1,24 @@
+{
+  "name": "VKU Student Mobile Survey PWA",
+  "short_name": "VKUSurvey",
+  "description": "Progressive Web App khảo sát nhu cầu sử dụng ứng dụng di động sinh viên VKU kết nối Google Sheets Database",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0284c7",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
