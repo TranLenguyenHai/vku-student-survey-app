@@ -1,5 +1,31 @@
-# Node & Temp
+# Node & Dependencies
 node_modules/
+package-lock.json
 .DS_Store
 *.log
 .env
+
+# Android Build & Cache
+android/.gradle/
+android/build/
+android/app/build/
+android/.idea/
+android/*.iml
+android/app/*.iml
+android/local.properties
+android/.cxx/
+
+# iOS Build & Cache
+ios/App/build/
+ios/App/.build/
+ios/App/Pods/
+ios/App/Podfile.lock
+ios/App/*.xcworkspace/xcuserdata/
+ios/App/*.xcodeproj/project.xcworkspace/xcuserdata/
+ios/App/*.xcodeproj/xcuserdata/
+
+# App Artifacts
+*.apk
+*.aab
+*.ipa
+*.zip

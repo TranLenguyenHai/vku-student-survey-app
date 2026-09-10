@@ -1,0 +1,39 @@
+{
+  "name": "vku-student-survey-app",
+  "version": "1.0.0",
+  "description": "Cross-Platform Mobile App for VKU Student Survey (Capacitor, Android Studio, iOS IPA, Capgo)",
+  "main": "app.js",
+  "scripts": {
+    "build": "node scripts/copy-web.js",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:android": "npm run build && npx cap open android",
+    "cap:ios": "npm run build && npx cap open ios",
+    "capgo:bundle": "npm run build && npx @capgo/cli bundle zip --path www",
+    "capgo:upload": "npx @capgo/cli bundle upload"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TranLenguyenHai/vku-student-survey-app.git"
+  },
+  "keywords": [
+    "vku",
+    "capacitor",
+    "ios",
+    "android",
+    "capgo",
+    "pwa"
+  ],
+  "author": "Tran Le Nguyen Hai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TranLenguyenHai/vku-student-survey-app/issues"
+  },
+  "homepage": "https://github.com/TranLenguyenHai/vku-student-survey-app#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.5.1",
+    "@capacitor/cli": "^8.5.1",
+    "@capacitor/core": "^8.5.1",
+    "@capacitor/ios": "^8.5.1",
+    "@capgo/capacitor-updater": "^8.51.15"
+  }
+}
