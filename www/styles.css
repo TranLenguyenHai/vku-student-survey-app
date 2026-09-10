@@ -176,6 +176,32 @@ body {
   white-space: nowrap;
 }
 
+.badge-telex {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--vku-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 0.25rem 0.65rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.badge-telex:active {
+  transform: scale(0.95);
+}
+
+.badge-telex:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  border-color: var(--border-glass);
+}
+
 .btn-icon {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-glass);

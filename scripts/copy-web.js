@@ -9,7 +9,7 @@ if (!fs.existsSync(destDir)) {
 }
 
 // Copy top-level web files
-const files = ['index.html', 'styles.css', 'app.js', 'google_script.js', 'manifest.json', 'sw.js'];
+const files = ['index.html', 'styles.css', 'app.js', 'telex.js', 'google_script.js', 'manifest.json', 'sw.js'];
 files.forEach(file => {
   const src = path.join(rootDir, file);
   if (fs.existsSync(src)) {

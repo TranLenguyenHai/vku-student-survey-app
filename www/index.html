@@ -67,7 +67,10 @@
       
       <!-- Section 1: Thông tin sinh viên -->
       <div class="form-section">
-        <h3 class="section-label">👤 1. Thông Tin Sinh Viên</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+          <h3 class="section-label" style="margin-bottom: 0;">👤 1. Thông Tin Sinh Viên</h3>
+          <button type="button" class="badge-telex active" id="btnToggleTelex" title="Bật/Tắt bộ gõ Telex tích hợp sẵn trong App">🇻🇳 Telex: BẬT</button>
+        </div>
         
         <div class="field-group">
           <label class="field-label" for="fullName">Họ và Tên <span>*</span></label>
@@ -223,6 +226,7 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <script src="telex.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
