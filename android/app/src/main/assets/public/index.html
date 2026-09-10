@@ -2,38 +2,39 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VKU Student Mobile Survey | Google Sheets Database PWA</title>
-  <meta name="description" content="Ứng dụng Progressive Web App (PWA) khảo sát nhu cầu sử dụng ứng dụng di động sinh viên VKU kết nối trực tiếp Google Sheets Database.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>VKU Mobile Survey | Hệ Thống Khảo Sát Sinh Viên</title>
+  <meta name="description" content="Ứng dụng khảo sát nhu cầu sử dụng ứng dụng di động sinh viên VKU kết nối trực tiếp Google Sheets Database.">
 
   <!-- PWA Manifest & Theme -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0284c7">
+  <meta name="theme-color" content="#070d1e">
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Sticky Navbar -->
+  <!-- Sticky Mobile Navbar -->
   <nav class="navbar">
     <div class="brand">
-      <span class="brand-badge">VKU PWA</span>
-      <span>Mobile <span class="text-gradient">Survey</span></span>
+      <span class="brand-badge">VKU</span>
+      <span class="brand-title">Mobile <span class="text-gradient">Survey</span></span>
     </div>
 
     <div class="status-bar">
       <div class="badge-status" id="netStatusBadge">
+        <span class="status-dot"></span>
         <span id="netStatusText">ONLINE</span>
       </div>
       <div class="badge-queue" id="queueBadge" style="display: none;">
-        <span>⏳</span> <span id="queueCount">0</span> Chờ Sync
+        <span>⏳</span> <span id="queueCount">0</span>
       </div>
-      <button class="btn-icon" id="btnSettings" title="Cấu hình Google Sheet Endpoint">⚙️</button>
+      <button class="btn-icon" id="btnSettings" title="Cấu hình Google Sheet Endpoint" type="button">⚙️</button>
     </div>
   </nav>
 
@@ -42,27 +43,27 @@
 
     <!-- Hero Header -->
     <header class="hero-header">
-      <span class="tag-vku">MINI-PROJECT 1 • FIELD SURVEY PWA</span>
-      <h1 class="hero-title">Khảo Sát Thiết Bị & Nhu Cầu <span class="text-gradient">App Sinh Viên VKU</span></h1>
+      <span class="tag-vku">MINI-PROJECT 1 • VKU SMART CAMPUS</span>
+      <h1 class="hero-title">Khảo Sát Thiết Bị & Nhu Cầu <br><span class="text-gradient">App Sinh Viên VKU</span></h1>
       <p class="hero-desc">
-        Dữ liệu được lưu trữ trực tiếp vào <strong>Google Sheets Database</strong> qua Google Apps Script Web API. Hỗ trợ lưu offline khi mất mạng và tự động đồng bộ khi khôi phục kết nối.
+        Dữ liệu được lưu trữ trực tiếp vào <strong>Google Sheets Database</strong> qua Google Apps Script Web API. Tự động lưu offline khi mất mạng và đồng bộ ngay khi có mạng trở lại.
       </p>
     </header>
 
-    <!-- Google Sheet API Endpoint Bar (Hidden for silent background submission) -->
+    <!-- Google Sheet API Endpoint Bar (Config Toggle) -->
     <div class="config-banner" id="configBanner" style="display: none;">
       <div class="config-title">
         <span>📊 Google Sheet Database Web App API Endpoint:</span>
       </div>
       <div class="config-input-group">
-        <input type="url" class="input-text" id="scriptUrlInput" placeholder="Dán URL Google Apps Script Web App tại đây (https://script.google.com/macros/s/.../exec)">
-        <button class="btn-primary" id="btnSaveConfig">Lưu Endpoint</button>
+        <input type="url" class="input-text" id="scriptUrlInput" placeholder="Dán URL Google Apps Script Web App tại đây..." autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="btn-primary" id="btnSaveConfig" type="button">Lưu Endpoint</button>
       </div>
-      <p style="font-size: 0.75rem; color: var(--text-muted);">* Mặc định ứng dụng sẽ tự động giả lập và ghi nhận dữ liệu nếu bạn chưa thiết lập URL Google Sheet.</p>
+      <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">* Đã cấu hình sẵn Google Sheets của bạn. Dữ liệu sẽ lưu tự động vào bảng tính.</p>
     </div>
 
     <!-- Survey Form Card -->
-    <form class="survey-card" id="surveyForm">
+    <form class="survey-card" id="surveyForm" autocomplete="off">
       
       <!-- Section 1: Thông tin sinh viên -->
       <div class="form-section">
@@ -70,18 +71,48 @@
         
         <div class="field-group">
           <label class="field-label" for="fullName">Họ và Tên <span>*</span></label>
-          <input type="text" class="input-text" id="fullName" placeholder="Ví dụ: Nguyễn Văn A" required>
+          <input 
+            type="text" 
+            class="input-text" 
+            id="fullName" 
+            placeholder="Ví dụ: Trần Lê Nguyên Hải" 
+            autocomplete="off" 
+            autocorrect="off" 
+            autocapitalize="words" 
+            spellcheck="false" 
+            inputmode="text" 
+            required>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="grid-2-col">
           <div class="field-group">
             <label class="field-label" for="studentId">Mã Sinh Viên (MSSV) <span>*</span></label>
-            <input type="text" class="input-text" id="studentId" placeholder="22IT001" required>
+            <input 
+              type="text" 
+              class="input-text" 
+              id="studentId" 
+              placeholder="22IT001" 
+              autocomplete="off" 
+              autocorrect="off" 
+              autocapitalize="characters" 
+              spellcheck="false" 
+              inputmode="text" 
+              required>
           </div>
 
           <div class="field-group">
             <label class="field-label" for="facultyClass">Khoa / Lớp <span>*</span></label>
-            <input type="text" class="input-text" id="facultyClass" placeholder="22IT1 / CNTT" required>
+            <input 
+              type="text" 
+              class="input-text" 
+              id="facultyClass" 
+              placeholder="22IT1 / CNTT" 
+              autocomplete="off" 
+              autocorrect="off" 
+              autocapitalize="characters" 
+              spellcheck="false" 
+              inputmode="text" 
+              required>
           </div>
         </div>
       </div>
@@ -122,11 +153,11 @@
         <div class="field-group">
           <label class="field-label">Chất lượng Wifi tại Campus & KTX (1 - 5 sao):</label>
           <div class="star-rating" data-target="wifiRating">
-            <button type="button" class="star-btn" data-value="1">★</button>
-            <button type="button" class="star-btn" data-value="2">★</button>
-            <button type="button" class="star-btn active" data-value="3">★</button>
-            <button type="button" class="star-btn" data-value="4">★</button>
-            <button type="button" class="star-btn" data-value="5">★</button>
+            <button type="button" class="star-btn" data-value="1" aria-label="1 sao">★</button>
+            <button type="button" class="star-btn" data-value="2" aria-label="2 sao">★</button>
+            <button type="button" class="star-btn active" data-value="3" aria-label="3 sao">★</button>
+            <button type="button" class="star-btn" data-value="4" aria-label="4 sao">★</button>
+            <button type="button" class="star-btn" data-value="5" aria-label="5 sao">★</button>
           </div>
           <input type="hidden" id="wifiRating" value="3">
         </div>
@@ -134,11 +165,11 @@
         <div class="field-group" style="margin-top: 1rem;">
           <label class="field-label">Thiết bị phòng Máy / Lab VKU (1 - 5 sao):</label>
           <div class="star-rating" data-target="labRating">
-            <button type="button" class="star-btn" data-value="1">★</button>
-            <button type="button" class="star-btn" data-value="2">★</button>
-            <button type="button" class="star-btn" data-value="3">★</button>
-            <button type="button" class="star-btn active" data-value="4">★</button>
-            <button type="button" class="star-btn" data-value="5">★</button>
+            <button type="button" class="star-btn" data-value="1" aria-label="1 sao">★</button>
+            <button type="button" class="star-btn" data-value="2" aria-label="2 sao">★</button>
+            <button type="button" class="star-btn" data-value="3" aria-label="3 sao">★</button>
+            <button type="button" class="star-btn active" data-value="4" aria-label="4 sao">★</button>
+            <button type="button" class="star-btn" data-value="5" aria-label="5 sao">★</button>
           </div>
           <input type="hidden" id="labRating" value="4">
         </div>
@@ -149,7 +180,14 @@
         <h3 class="section-label">💡 4. Đóng Góp Ý Kiến & Tính Năng App Mong Muốn</h3>
         <div class="field-group">
           <label class="field-label" for="desiredFeatures">Gợi ý tính năng mong muốn trên App VKU Smart Campus:</label>
-          <textarea class="input-text" id="desiredFeatures" rows="3" placeholder="Ví dụ: Đặt lịch phòng lab tự động, xem điểm thi nhanh, thông báo lịch học..."></textarea>
+          <textarea 
+            class="input-text" 
+            id="desiredFeatures" 
+            rows="3" 
+            placeholder="Ví dụ: Đặt lịch phòng lab tự động, xem điểm thi nhanh, thông báo lịch học..." 
+            autocomplete="off" 
+            autocorrect="off" 
+            spellcheck="false"></textarea>
         </div>
       </div>
 
@@ -160,7 +198,7 @@
 
     <!-- Submission History Section -->
     <section class="history-card">
-      <h3 style="font-size: 1.1rem; font-weight: 700;">📋 Lịch Sử Khảo Sát Đã Gửi (Local & Google Sheets)</h3>
+      <h3 class="history-title">📋 Lịch Sử Khảo Sát Đã Gửi (Local & Google Sheets)</h3>
       <div class="table-wrapper">
         <table class="data-table">
           <thead>
@@ -169,7 +207,7 @@
               <th>Họ & Tên</th>
               <th>MSSV</th>
               <th>Hệ điều hành</th>
-              <th>Wifi/Lab Rating</th>
+              <th>Wifi/Lab</th>
               <th>Trạng thái</th>
             </tr>
           </thead>

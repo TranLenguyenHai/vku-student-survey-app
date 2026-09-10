@@ -1,18 +1,18 @@
-/* VKU Student Survey PWA - Core JavaScript Logic */
+/* VKU Student Survey App - Core JavaScript Logic */
 
 const STORAGE_KEY_URL = 'vku_survey_script_url';
 const STORAGE_KEY_QUEUE = 'vku_survey_offline_queue';
 const STORAGE_KEY_HISTORY = 'vku_survey_history';
 
-// User's Google Sheet Web App Endpoint (Hardcoded for silent background submission)
+// User's Google Sheet Web App Endpoint (Direct background submission)
 const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuU-juqAXqwRyfpqsVP9v37SzCEz3NXHTVgf_IJACT2iN0BXsNOsIZ93LPUjveTArF/exec';
 
 // Default Mock / Demo Data
 let historyData = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)) || [
   {
     timestamp: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
-    fullName: 'Nguyễn Văn An',
-    studentId: '22IT015',
+    fullName: 'Trần Lê Nguyên Hải',
+    studentId: '22IT001',
     osPlatform: 'iOS',
     wifiRating: '4 ★',
     labRating: '5 ★',
@@ -21,6 +21,14 @@ let historyData = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)) || [
 ];
 
 let offlineQueue = JSON.parse(localStorage.getItem(STORAGE_KEY_QUEUE)) || [];
+
+// Enable mouse wheel scrolling on Android Studio emulator and desktop browsers
+window.addEventListener('wheel', (e) => {
+  window.scrollBy({
+    top: e.deltaY,
+    behavior: 'auto'
+  });
+}, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => {
   setupPlatformBadge();
@@ -41,13 +49,13 @@ function setupPlatformBadge() {
   if (window.Capacitor && typeof window.Capacitor.getPlatform === 'function') {
     const platform = window.Capacitor.getPlatform();
     if (platform === 'ios') {
-      brandBadge.textContent = 'VKU iOS APP';
+      brandBadge.textContent = 'iOS';
       brandBadge.style.background = 'linear-gradient(135deg, #3b82f6, #6366f1)';
     } else if (platform === 'android') {
-      brandBadge.textContent = 'VKU ANDROID APP';
+      brandBadge.textContent = 'Android';
       brandBadge.style.background = 'linear-gradient(135deg, #10b981, #059669)';
     } else {
-      brandBadge.textContent = 'VKU HYBRID APP';
+      brandBadge.textContent = 'VKU';
     }
   }
 }
@@ -85,14 +93,15 @@ function setupPWA() {
   const netText = document.getElementById('netStatusText');
 
   function updateNetworkStatus() {
+    if (!netBadge || !netText) return;
     if (navigator.onLine) {
       netBadge.classList.remove('offline');
-      netText.textContent = 'ONLINE (PWA ACTIVE)';
+      netText.textContent = 'ONLINE';
       // Sync queue if items exist
       syncOfflineQueue();
     } else {
       netBadge.classList.add('offline');
-      netText.textContent = 'OFFLINE MODE';
+      netText.textContent = 'OFFLINE';
       showToast('⚠️ Bạn đang ở chế độ Offline. Khảo sát sẽ tự động lưu tạm!');
     }
   }
@@ -102,26 +111,43 @@ function setupPWA() {
   updateNetworkStatus();
 }
 
-/* --- Google Sheets API Config --- */
+/* --- Google Sheets API Config & Settings Toggle --- */
 function setupConfig() {
   const input = document.getElementById('scriptUrlInput');
   const btnSave = document.getElementById('btnSaveConfig');
+  const btnSettings = document.getElementById('btnSettings');
+  const configBanner = document.getElementById('configBanner');
   const savedUrl = localStorage.getItem(STORAGE_KEY_URL);
 
-  if (savedUrl) {
+  if (savedUrl && input) {
     input.value = savedUrl;
   }
 
-  btnSave.addEventListener('click', () => {
-    const url = input.value.trim();
-    if (url) {
-      localStorage.setItem(STORAGE_KEY_URL, url);
-      showToast('✅ Đã lưu Google Sheet Web App API Endpoint!');
-    } else {
-      localStorage.removeItem(STORAGE_KEY_URL);
-      showToast('ℹ️ Đã xóa Endpoint. Form sẽ dùng chế độ Demo.');
-    }
-  });
+  if (btnSettings && configBanner) {
+    btnSettings.addEventListener('click', () => {
+      const isHidden = configBanner.style.display === 'none' || !configBanner.style.display;
+      configBanner.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) {
+        configBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+
+  if (btnSave && input) {
+    btnSave.addEventListener('click', () => {
+      const url = input.value.trim();
+      if (url) {
+        localStorage.setItem(STORAGE_KEY_URL, url);
+        showToast('✅ Đã lưu Google Sheet Web App API Endpoint!');
+      } else {
+        localStorage.removeItem(STORAGE_KEY_URL);
+        showToast('ℹ️ Đã chuyển về Endpoint mặc định.');
+      }
+      if (configBanner) {
+        configBanner.style.display = 'none';
+      }
+    });
+  }
 }
 
 /* --- Star Rating Widgets --- */
@@ -136,7 +162,7 @@ function setupStarRatings() {
     btns.forEach((btn, index) => {
       btn.addEventListener('click', () => {
         const val = btn.getAttribute('data-value');
-        hiddenInput.value = val;
+        if (hiddenInput) hiddenInput.value = val;
 
         btns.forEach((b, idx) => {
           if (idx <= index) {
@@ -154,21 +180,29 @@ function setupStarRatings() {
 function setupFormHandler() {
   const form = document.getElementById('surveyForm');
   const btnSubmit = document.getElementById('btnSubmit');
+  if (!form || !btnSubmit) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const osRadio = document.querySelector('input[name="osPlatform"]:checked');
-    
+    const fullNameVal = document.getElementById('fullName').value.trim();
+    const studentIdVal = document.getElementById('studentId').value.trim();
+    const facultyClassVal = document.getElementById('facultyClass').value.trim();
+    const dailyHoursVal = document.getElementById('dailyHours').value;
+    const wifiRatingVal = document.getElementById('wifiRating').value + ' ★';
+    const labRatingVal = document.getElementById('labRating').value + ' ★';
+    const desiredFeaturesVal = document.getElementById('desiredFeatures').value.trim();
+
     const formData = {
-      fullName: document.getElementById('fullName').value.trim(),
-      studentId: document.getElementById('studentId').value.trim(),
-      facultyClass: document.getElementById('facultyClass').value.trim(),
+      fullName: fullNameVal,
+      studentId: studentIdVal,
+      facultyClass: facultyClassVal,
       osPlatform: osRadio ? osRadio.value : 'iOS',
-      dailyHours: document.getElementById('dailyHours').value,
-      wifiRating: document.getElementById('wifiRating').value + ' ★',
-      labRating: document.getElementById('labRating').value + ' ★',
-      desiredFeatures: document.getElementById('desiredFeatures').value.trim(),
+      dailyHours: dailyHoursVal,
+      wifiRating: wifiRatingVal,
+      labRating: labRatingVal,
+      desiredFeatures: desiredFeaturesVal,
       timestamp: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
       syncMode: navigator.onLine ? 'Google Sheets (Synced)' : 'Offline (Chờ Sync)'
     };
@@ -176,15 +210,14 @@ function setupFormHandler() {
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<span>⏳ Đang gửi dữ liệu...</span>';
 
-    // Always use hardcoded Google Apps Script Web App Endpoint
-    const scriptUrl = DEFAULT_SCRIPT_URL;
+    // Direct Google Apps Script Web App Endpoint
+    const scriptUrl = localStorage.getItem(STORAGE_KEY_URL) || DEFAULT_SCRIPT_URL;
 
     if (navigator.onLine && scriptUrl) {
       try {
-        // Send POST to Google Apps Script
         await fetch(scriptUrl, {
           method: 'POST',
-          mode: 'no-cors', // Necessary for Google Apps Script Web Apps
+          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
@@ -193,25 +226,47 @@ function setupFormHandler() {
         saveHistoryRecord(formData);
         form.reset();
 
+        // Reset star ratings to default (3 and 4)
+        resetStarRatings();
+
       } catch (err) {
         console.error('[API Error]', err);
-        // Fallback to queue if request fails
         queueOfflineRecord(formData);
       }
-    } else if (navigator.onLine && !scriptUrl) {
-      // Mock / Demo mode when no URL configured
-      showToast('ℹ️ Đã ghi nhận bản ghi (Chế độ Demo Web App)!');
-      saveHistoryRecord(formData);
-      form.reset();
     } else {
-      // Offline mode
       queueOfflineRecord(formData);
       form.reset();
+      resetStarRatings();
     }
 
     btnSubmit.disabled = false;
     btnSubmit.innerHTML = '<span>🚀 Gửi Khảo Sát Nhanh</span>';
   });
+}
+
+function resetStarRatings() {
+  const wifiInput = document.getElementById('wifiRating');
+  const labInput = document.getElementById('labRating');
+  if (wifiInput) wifiInput.value = '3';
+  if (labInput) labInput.value = '4';
+
+  const wifiContainer = document.querySelector('[data-target="wifiRating"]');
+  if (wifiContainer) {
+    const btns = wifiContainer.querySelectorAll('.star-btn');
+    btns.forEach((b, idx) => {
+      if (idx < 3) b.classList.add('active');
+      else b.classList.remove('active');
+    });
+  }
+
+  const labContainer = document.querySelector('[data-target="labRating"]');
+  if (labContainer) {
+    const btns = labContainer.querySelectorAll('.star-btn');
+    btns.forEach((b, idx) => {
+      if (idx < 4) b.classList.add('active');
+      else b.classList.remove('active');
+    });
+  }
 }
 
 /* --- Offline Queue Management --- */
@@ -221,13 +276,13 @@ function queueOfflineRecord(record) {
   localStorage.setItem(STORAGE_KEY_QUEUE, JSON.stringify(offlineQueue));
   saveHistoryRecord(record);
   updateQueueBadge();
-  showToast('📥 Đã lưu khảo sát vào bộ nhớ Offline PWA!');
+  showToast('📥 Đã lưu khảo sát vào bộ nhớ Offline!');
 }
 
 async function syncOfflineQueue() {
   if (offlineQueue.length === 0) return;
 
-  const scriptUrl = DEFAULT_SCRIPT_URL;
+  const scriptUrl = localStorage.getItem(STORAGE_KEY_URL) || DEFAULT_SCRIPT_URL;
   if (!scriptUrl) return;
 
   showToast(`⚡ Đang đồng bộ ${offlineQueue.length} bản ghi Offline lên Google Sheet...`);
@@ -257,6 +312,7 @@ async function syncOfflineQueue() {
 function updateQueueBadge() {
   const badge = document.getElementById('queueBadge');
   const count = document.getElementById('queueCount');
+  if (!badge || !count) return;
 
   if (offlineQueue.length > 0) {
     badge.style.display = 'inline-flex';
@@ -275,16 +331,17 @@ function saveHistoryRecord(record) {
 
 function renderHistoryTable() {
   const tbody = document.getElementById('historyTableBody');
+  if (!tbody) return;
   tbody.innerHTML = '';
 
   historyData.forEach(item => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><code style="font-family: var(--font-mono); font-size: 0.75rem;">${item.timestamp}</code></td>
+      <td><span style="font-size: 0.75rem; color: var(--text-muted);">${item.timestamp}</span></td>
       <td><strong>${item.fullName}</strong></td>
       <td>${item.studentId}</td>
       <td><span style="font-weight: 700; color: var(--vku-cyan);">${item.osPlatform}</span></td>
-      <td>Wifi: ${item.wifiRating} | Lab: ${item.labRating}</td>
+      <td>W:${item.wifiRating} | L:${item.labRating}</td>
       <td><span style="color: ${item.syncMode.includes('Synced') ? 'var(--vku-emerald)' : 'var(--vku-amber)'}; font-weight: 600;">${item.syncMode}</span></td>
     `;
     tbody.appendChild(tr);
@@ -294,6 +351,8 @@ function renderHistoryTable() {
 /* --- Toast Notification Utility --- */
 function showToast(msg) {
   const container = document.getElementById('toastContainer');
+  if (!container) return;
+
   const toast = document.createElement('div');
   toast.className = 'toast';
   toast.textContent = msg;
