@@ -22,21 +22,16 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Sync Capacitor iOS
+      - name: Copy Web Assets to iOS
         run: |
           npm run build
-          npx cap sync ios
+          npx cap copy ios
 
       - name: Build Xcode Archive (Unsigned for Sideloadly)
         run: |
           mkdir -p build
-          if [ -d "ios/App/App.xcworkspace" ]; then
-            BUILD_FLAG="-workspace ios/App/App.xcworkspace"
-          else
-            BUILD_FLAG="-project ios/App/App.xcodeproj"
-          fi
-          echo "Building with: $BUILD_FLAG"
-          xcodebuild $BUILD_FLAG \
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
             -scheme App \
             -destination 'generic/platform=iOS' \
             -configuration Release \
