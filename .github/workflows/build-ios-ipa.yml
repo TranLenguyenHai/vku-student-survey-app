@@ -18,7 +18,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install Dependencies
         run: npm install
@@ -31,10 +30,15 @@ jobs:
       - name: Build Xcode Archive (Unsigned for Sideloadly)
         run: |
           mkdir -p build
-          xcodebuild \
-            -workspace ios/App/App.xcworkspace \
+          if [ -d "ios/App/App.xcworkspace" ]; then
+            BUILD_FLAG="-workspace ios/App/App.xcworkspace"
+          else
+            BUILD_FLAG="-project ios/App/App.xcodeproj"
+          fi
+          echo "Building with: $BUILD_FLAG"
+          xcodebuild $BUILD_FLAG \
             -scheme App \
-            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
             -configuration Release \
             -archivePath "$PWD/build/App.xcarchive" \
             CODE_SIGNING_ALLOWED=NO \
